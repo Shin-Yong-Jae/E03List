@@ -2,6 +2,7 @@ package net.skhu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class RecyclerView2Adapter extends RecyclerView.Adapter<RecyclerView2Adapter.ViewHolder> {
+public class RecyclerView3Adapter extends RecyclerView.Adapter<RecyclerView3Adapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         TextView textView1, textView2;
         CheckBox checkBox;
@@ -37,9 +38,13 @@ public class RecyclerView2Adapter extends RecyclerView.Adapter<RecyclerView2Adap
 
         @Override
         public void onClick(View view) {
-            Memo memo = arrayList.get(super.getAdapterPosition());
-            String s = String.format("index: %d, title: %s", super.getAdapterPosition(), memo.getTitle());
-            Toast.makeText(view.getContext(), s, Toast.LENGTH_SHORT).show();
+            int index = super.getAdapterPosition();
+            RecyclerView3Activity activity = (RecyclerView3Activity) textView1.getContext();
+            activity.memoIndex = index;
+            Memo memo = arrayList.get(index);
+            Intent intent = new Intent(activity, MemoActivity.class);
+            intent.putExtra("MEMO", memo);
+            activity.startActivityForResult(intent, RecyclerView3Activity.REQUEST_EDIT);
         }
 
         @Override
@@ -59,7 +64,7 @@ public class RecyclerView2Adapter extends RecyclerView.Adapter<RecyclerView2Adap
     ArrayList<Memo> arrayList;
     int checkedCount = 0;
 
-    public RecyclerView2Adapter(Context context, ArrayList<Memo> arrayList) {
+    public RecyclerView3Adapter(Context context, ArrayList<Memo> arrayList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.arrayList = arrayList;
     }
